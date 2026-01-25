@@ -1,30 +1,65 @@
-# 2: Used to extract used and defined variables, imports
+# 2: analyzer.py
+# Purpose:
+# Extract structural + semantic signals from code cells.
+# These are HEURISTICS, not a full dependency graph.
+
 import ast
-from typing import Set, Dict
-from parser import parse_notebook
+from typing import Set, Dict, List
 import builtins
+
 BUILTINS = set(dir(builtins))
 
 
-def get_defined_vars(code: str) -> Set[str]:
-    tree = ast.parse(code)
+# --------------------------------------------------
+# Extract variables defined in the cell
+# --------------------------------------------------
+def get_defined_vars(tree: ast.AST) -> Set[str]:
     defined = set()
 
     for node in ast.walk(tree):
+
+        # x = ...
         if isinstance(node, ast.Assign):
             for target in node.targets:
                 if isinstance(target, ast.Name):
                     defined.add(target.id)
+
+        # def foo():
         elif isinstance(node, ast.FunctionDef):
             defined.add(node.name)
+
+        # class Foo:
         elif isinstance(node, ast.ClassDef):
             defined.add(node.name)
+
+        # import numpy as np
+        elif isinstance(node, ast.Import):
+            for alias in node.names:
+                defined.add(alias.asname or alias.name.split(".")[0])
+
+        # from sklearn.model_selection import train_test_split
+        elif isinstance(node, ast.ImportFrom):
+            for alias in node.names:
+                defined.add(alias.asname or alias.name)
+
+        # for i in range(...)
+        elif isinstance(node, ast.For):
+            if isinstance(node.target, ast.Name):
+                defined.add(node.target.id)
+
+        # with open(...) as f
+        elif isinstance(node, ast.With):
+            for item in node.items:
+                if item.optional_vars and isinstance(item.optional_vars, ast.Name):
+                    defined.add(item.optional_vars.id)
 
     return defined
 
 
-def get_used_vars(code: str) -> Set[str]:
-    tree = ast.parse(code)
+# --------------------------------------------------
+# Extract variables used (read) in the cell
+# --------------------------------------------------
+def get_used_vars(tree: ast.AST) -> Set[str]:
     used = set()
 
     for node in ast.walk(tree):
@@ -34,34 +69,71 @@ def get_used_vars(code: str) -> Set[str]:
     return used
 
 
+# --------------------------------------------------
+# Extract called functions / methods
+# --------------------------------------------------
+def extract_called_symbols(tree: ast.AST) -> List[str]:
+    """
+    Examples:
+    - pd.read_csv
+    - model.fit
+    - plt.show
+    """
+    called = set()
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call):
+
+            # obj.method(...)
+            if isinstance(node.func, ast.Attribute):
+                parts = []
+                obj = node.func
+
+                while isinstance(obj, ast.Attribute):
+                    parts.append(obj.attr)
+                    obj = obj.value
+
+                if isinstance(obj, ast.Name):
+                    parts.append(obj.id)
+
+                called.add(".".join(reversed(parts)))
+
+            # function(...)
+            elif isinstance(node.func, ast.Name):
+                called.add(node.func.id)
+
+    return sorted(called)
+
+
+# --------------------------------------------------
+# Main analyzer entry point
+# --------------------------------------------------
 def analyze_code_cell(cell: Dict) -> Dict:
-    if cell["type"] != "code":
+    if cell.get("type") != "code":
         return cell
 
-    code = cell["source"]
+    code = cell.get("source", "")
 
     try:
-        defined = get_defined_vars(code)
-        used = get_used_vars(code)
-    except SyntaxError:
-        defined, used = set(), set()
+        tree = ast.parse(code)
 
+        defined = get_defined_vars(tree)
+        used = get_used_vars(tree)
+        called_symbols = extract_called_symbols(tree)
+
+    except SyntaxError:
+        defined, used, called_symbols = set(), set(), []
+
+    # Heuristic external dependencies
     external_inputs = {
-        var for var in used - defined
-        if var not in BUILTINS
+        var for var in used
+        if var not in defined and var not in BUILTINS
     }
 
-    cell["defined"] = list(defined)
-    cell["used"] = list(external_inputs)
+    # Store ALL signals explicitly
+    cell["defined"] = sorted(defined)
+    cell["used"] = sorted(used)
+    cell["external_inputs"] = sorted(external_inputs)
+    cell["called_symbols"] = sorted(called_symbols)
 
     return cell
-
-
-cells = parse_notebook("SVM Training and EDA.ipynb")
-analyzed = [analyze_code_cell(c) for c in cells]
-
-for c in analyzed:
-    if c["type"] == "code":
-        print(f"\nCell {c['id']}")
-        print("Defined:", c["defined"])
-        print("Used:", c["used"])
