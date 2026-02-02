@@ -28,6 +28,13 @@ def get_defined_vars(tree: ast.AST) -> Set[str]:
         elif isinstance(node, ast.FunctionDef):
             defined.add(node.name)
 
+        # function arguments
+        elif isinstance(node, ast.FunctionDef):
+            defined.add(node.name)
+            for arg in node.args.args:
+                defined.add(arg.arg)
+
+
         # class Foo:
         elif isinstance(node, ast.ClassDef):
             defined.add(node.name)

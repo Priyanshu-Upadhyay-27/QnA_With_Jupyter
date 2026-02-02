@@ -1,4 +1,3 @@
-# 1:
 # 1: parser.py
 import nbformat
 from typing import List, Dict
@@ -38,14 +37,5 @@ def parse_notebook(path: str) -> List[Dict]:
     return parsed_cells
 
 
-if __name__ == "__main__":
-    cells = parse_notebook("SVM Training and EDA.ipynb")
 
-    for c in cells:
-        print("=" * 50)
-        print(f"""Cell {c['id'][:8]} | Type: {c['type']} | Index: {c['cell_index']} | Exec: {c['exec_order']}""")
-        print(f"  Section hint: {c['metadata'].get('section', 'None')}")
-        print(f"  Tags: {c['tags']}")
-        print(f"  Has error: {c['has_error']}")
-        print(f"  Source preview: {c['source'][:100]}...")
 

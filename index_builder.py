@@ -14,3 +14,13 @@ def build_index(documents, persist_dir="./chroma_store"):
     return vectordb
 
 
+# Jina v3 setup
+from sentence_transformers import SentenceTransformer
+model = SentenceTransformer('BAAI/bge-m3')
+embeddings = model.encode('test')
+
+print(len(embeddings))
+
+
+
+
