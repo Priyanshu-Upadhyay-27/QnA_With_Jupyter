@@ -1,4 +1,5 @@
 # 6: creates the RAG document object which can be circulated in the RAG pipeline
+# In total, I have 15 fields in RAG object.
 from langchain_core.documents import Document
 
 def final_cell_to_document(cell: dict) -> Document:

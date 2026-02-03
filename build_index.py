@@ -1,3 +1,5 @@
+# In this, all the pre-built user defined functions are called and used here, to make the embeddings and
+# store them in a vector store
 from parser import parse_notebook
 from analyzer import analyze_code_cell
 from explainer import explain_cell
@@ -74,18 +76,9 @@ def main():
         save_rag_documents(rag_docs, RAG_DOCS)
 
     # 6. SPLIT DOCUMENTS (persist + reload)
-    if exists(SPLIT_DOCS):
-        split_docs_raw = load(SPLIT_DOCS)
-        rag_chunks = [
-            Document(
-                page_content=d["page_content"],
-                metadata=d["metadata"]
-            )
-            for d in split_docs_raw
-        ]
-    else:
-        rag_chunks = split_rag_documents(rag_docs)
-        save_split_documents(rag_chunks, SPLIT_DOCS)
+    # I have removed the text splitter, since jupyter cells have less code so, each page_content of a document is small
+    # enough for a llm to understand.
+    rag_chunks = rag_docs
 
     # 7. EMBEDDINGS
     build_index(rag_chunks)

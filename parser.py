@@ -1,4 +1,4 @@
-# 1: parser.py
+# 1: parser.py, here basic metadata is extracted using nbformat like cell nuber, execution count etc
 import nbformat
 from typing import List, Dict
 

@@ -93,18 +93,18 @@ def explain_cell(cell: dict) -> dict:
 
 
 ##############################
-from parser import parse_notebook
-from analyzer import analyze_code_cell
-
-cells = parse_notebook("SVM Training and EDA.ipynb")
-cells = [analyze_code_cell(c) for c in cells]
-cells = [explain_cell(c) for c in cells]
-
-for c in cells:
-    if c["type"] == "code":
-        print("=" * 40)
-        print(f"Cell {c['id']}")
-        print("Purpose:", c["purpose"])
-        print("Explanation:", c["explanation"])
-        print("Intent:", c["intent"])
-        print("Called:", c.get("called_symbols", []))
+# from parser import parse_notebook
+# from analyzer import analyze_code_cell
+#
+# cells = parse_notebook("SVM Training and EDA.ipynb")
+# cells = [analyze_code_cell(c) for c in cells]
+# cells = [explain_cell(c) for c in cells]
+#
+# for c in cells:
+#     if c["type"] == "code":
+#         print("=" * 40)
+#         print(f"Cell {c['id']}")
+#         print("Purpose:", c["purpose"])
+#         print("Explanation:", c["explanation"])
+#         print("Intent:", c["intent"])
+#         print("Called:", c.get("called_symbols", []))

@@ -1,5 +1,4 @@
 # 4 : functions used to build the final custom deifned object
-# 4: functions used to build the final custom defined object
 def assign_sections(parsed_cells):
     """
     Attach section headers (markdown starting with #) to following cells.

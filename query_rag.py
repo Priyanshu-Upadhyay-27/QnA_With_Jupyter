@@ -1,6 +1,6 @@
 from query_engine import ask
 
-print(ask("What are the conclusions from the heatmap", debug=True))
+print(ask("What type of analysis of data is done in the notebook", debug=True))
 
 
 
