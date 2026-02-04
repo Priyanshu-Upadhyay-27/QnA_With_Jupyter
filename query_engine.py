@@ -1,6 +1,6 @@
 from langchain_community.vectorstores import Chroma
 from langchain_ollama import ChatOllama, OllamaEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+#from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # Load models
 llm = ChatOllama(
