@@ -5,7 +5,7 @@ from analyzer import analyze_code_cell
 from explainer import explain_cell
 from final_object_builder import assign_sections, build_final_object
 from rag_document_builder import build_rag_documents
-from text_splitter import split_rag_documents
+# from text_splitter import split_rag_documents
 from index_builder import build_index
 from storage import (
     save,
@@ -24,7 +24,7 @@ ANALYZED = "artifacts/analyzed_cells.json"
 EXPLAINED = "artifacts/explained_cells.json"
 FINAL = "artifacts/final_cells.json"
 RAG_DOCS = "artifacts/rag_documents.json"
-SPLIT_DOCS = "artifacts/split_documents.json"
+
 
 
 def main():
@@ -78,10 +78,10 @@ def main():
     # 6. SPLIT DOCUMENTS (persist + reload)
     # I have removed the text splitter, since jupyter cells have less code so, each page_content of a document is small
     # enough for a llm to understand.
-    rag_chunks = rag_docs
+    # rag_chunks = rag_docs
 
     # 7. EMBEDDINGS
-    build_index(rag_chunks)
+    build_index(rag_docs)
 
     print("Index built successfully")
 
