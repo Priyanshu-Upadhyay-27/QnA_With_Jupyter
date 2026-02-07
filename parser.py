@@ -2,7 +2,6 @@
 import nbformat
 from typing import List, Dict
 
-
 def load_notebook(path: str):
     return nbformat.read(path, as_version=4)
 

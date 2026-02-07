@@ -1,4 +1,4 @@
-# 5: final object is build here, once it's built, we convert this to standard RAG document object.
+# 5 build_cells.py: final object is build here, once it's built, we convert this to standard RAG document object.
 from parser import parse_notebook
 from analyzer import analyze_code_cell
 from explainer import explain_cell

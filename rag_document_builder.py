@@ -1,14 +1,15 @@
 # 6: creates the RAG document object which can be circulated in the RAG pipeline
-# In total, I have 15 fields in RAG object.
 from langchain_core.documents import Document
 
-def final_cell_to_document(cell: dict) -> Document:
-    """
-    Convert a structured NotebookCell into a RAG-ready Document.
-    Uses Intent + WHAT + WHY + Code structure for optimal embeddings.
-    """
+def safe_scalar(value):
+    """Convert ANY value to str/int/float/bool/None."""
+    if value is None:
+        return None
+    if isinstance(value, (str, int, float, bool)):
+        return value
+    return str(value)
 
-    # Page content: What gets embedded (Intent + Purpose + Explanation + Code)
+def final_cell_to_document(cell: dict) -> Document:
     page_content = f"""
 Intent: {cell.get('intent', 'unknown')}
 WHAT: {cell.get('purpose', '')}
@@ -18,35 +19,39 @@ Code:
 {cell.get('source', '')}
     """.strip()
 
-    # Metadata: Structured fields for filtering and ranking (NOT embedded)
+    # ✅ ALL 15 FIELDS - SAFE CONVERSION
     metadata = {
-        "cell_id": cell.get("cell_id"),
-        "cell_index": cell.get("cell_index"),
-        "cell_type": cell.get("cell_type"),
-        "exec_order": cell.get("exec_order"),
-        "section": cell.get("section"),
-        "intent": cell.get("intent"),
-        "tags": cell.get("tags", []),
-        "has_error": cell.get("has_error", False),
-        "used": cell.get("used", []),
-        "defined": cell.get("defined", []),
-        "called_symbols": cell.get("called_symbols", []),
-        "dependency_score": cell.get("dependency_score", 0)
+        "cell_id": safe_scalar(cell.get("cell_id")),
+        "cell_index": safe_scalar(cell.get("cell_index")),
+        "cell_type": safe_scalar(cell.get("cell_type")),
+        "exec_order": safe_scalar(cell.get("exec_order")),
+        "section": safe_scalar(cell.get("section")),
+        "intent": safe_scalar(cell.get("intent")),
+        "tags": safe_scalar(cell.get("tags")),
+        "has_error": safe_scalar(cell.get("has_error")),
+        "used": safe_scalar(cell.get("used")),
+        "defined": safe_scalar(cell.get("defined")),
+        "called_symbols": safe_scalar(cell.get("called_symbols")),
+        "dependency_score": safe_scalar(cell.get("dependency_score")),
+        "purpose": safe_scalar(cell.get("purpose")),
+        "explanation": safe_scalar(cell.get("explanation")),
+        "source_length": len(str(cell.get("source", "")))
     }
 
     return Document(page_content=page_content, metadata=metadata)
 
 
 def build_rag_documents(final_cells: list) -> list:
-    """
-    Convert list of final structured cells into RAG Documents.
-    Only processes code cells for embedding.
-    """
     docs = []
     for cell in final_cells:
-        if cell.get("cell_type") == "code":  # only embed code cells
+        if cell.get("cell_type") == "code":
             docs.append(final_cell_to_document(cell))
 
     print(f"✅ Created {len(docs)} RAG documents from {len(final_cells)} total cells")
     return docs
+
+
+
+
+
 
