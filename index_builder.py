@@ -1,17 +1,24 @@
-from langchain_chroma import Chroma  # ✅ FIXED: New import
-from langchain_ollama import OllamaEmbeddings
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
 
 
 def build_index(documents, persist_dir="./chroma_store"):
-    """
-    Build ChromaDB vector index from documents using Ollama bge-m3 embeddings.
-    """
-    # Your Ollama bge-m3 ✅ Perfect
-    embeddings = OllamaEmbeddings(model="bge-m3")
+    print(f"Loading embedding model (this may take a minute first time)...")
+
+    # ✅ FIX: trust_remote_code=True is REQUIRED for Salesforce models
+    embeddings = HuggingFaceEmbeddings(
+        model_name="Salesforce/codet5p-110m-embedding",
+        model_kwargs={
+            "device": "cuda",  # Use "cpu" if CUDA fails
+            "trust_remote_code": True  # <--- CRITICAL FIX
+        },
+        encode_kwargs={
+            "normalize_embeddings": True
+        }
+    )
 
     print(f"Building index for {len(documents)} documents...")
 
-    # Create vector store
     vectordb = Chroma.from_documents(
         documents=documents,
         embedding=embeddings,
@@ -19,5 +26,7 @@ def build_index(documents, persist_dir="./chroma_store"):
         collection_name="notebook_rag"
     )
 
-    print(f"✅ Index built & persisted! {len(documents)} docs in {persist_dir}")
+    print(f"✅ Index built! {len(documents)} docs in {persist_dir}")
     return vectordb
+
+
