@@ -49,6 +49,8 @@ Thumbs.db
 # Extras
 # ========================
 test1.py
+test2.py
+test_custom_object.py
 loan_default_prediction_colab.ipynb
 debug_metadata.py
 test_code5t.py
