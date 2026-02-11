@@ -20,12 +20,12 @@ Task: Analyze the provided code and respond with exactly THREE lines:
 1. WHAT: Identify the SPECIFIC operation/algorithm/technique in the code
    - Name the exact library/function used (e.g., "GridSearchCV", "KMeans", "train_test_split")
    - Mention key parameters if relevant
-   - Maximum 30 words
+   - Maximum 40 words
 
 2. WHY: State the TECHNICAL reason this operation is needed
    - Focus on the prerequisite or purpose (e.g., "hyperparameter tuning", "avoid data leakage")
    - Be specific to the code's context
-   - Maximum 30 words
+   - Maximum 40 words
 
 3. TAG: One word category [data_loading, preprocessing, feature_engineering, model_training, evaluation, visualization, utility, other]
 
