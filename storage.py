@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from langchain_core.documents import Document
 
 def save(obj, path: str):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -13,32 +14,35 @@ def load(path: str):
 def exists(path: str) -> bool:
     return Path(path).exists()
 
-def save_rag_documents(docs, path="artifacts/rag_documents.json"):
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
+def save_documents(documents, path: str):
+    serializable = []
 
-    serialized = [
-        {
+    for doc in documents:
+        serializable.append({
             "page_content": doc.page_content,
             "metadata": doc.metadata
-        }
-        for doc in docs
-    ]
+        })
 
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(serialized, f, indent=2)
-
-
-
-def save_split_documents(split_docs, path="artifacts/split_documents.json"):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
 
-    serialized = [
-        {
-            "page_content": doc.page_content,
-            "metadata": doc.metadata
-        }
-        for doc in split_docs
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(serializable, f, indent=2, ensure_ascii=False)
+
+    print(f"💾 Saved {len(documents)} docs to {path}")
+
+
+
+def load_documents(path: str):
+    with open(path, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+
+    documents = [
+        Document(
+            page_content=d["page_content"],
+            metadata=d["metadata"]
+        )
+        for d in raw
     ]
 
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(serialized, f, indent=2)
+    print(f"📂 Loaded {len(documents)} docs from {path}")
+    return documents
