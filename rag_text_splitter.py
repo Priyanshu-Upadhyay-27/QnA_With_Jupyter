@@ -1,4 +1,4 @@
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 
 
@@ -50,3 +50,60 @@ def split_text_documents(
 
     print(f"✂️ Text docs split: {len(documents)} → {len(split_docs)}")
     return split_docs
+
+def split_code_documents(
+    documents: list[Document],
+    max_length: int = 800
+) -> list[Document]:
+    """
+    Custom splitter for notebook code cells.
+    Splits only very long cells.
+    Splits by lines to preserve execution logic.
+    """
+
+    split_docs = []
+
+    for doc in documents:
+        content = doc.page_content.strip()
+
+        # Keep atomic if small
+        if len(content) <= max_length:
+            split_docs.append(doc)
+            continue
+
+        lines = content.splitlines()
+        buffer = []
+        chunk_index = 0
+
+        for line in lines:
+            buffer.append(line)
+
+            if len("\n".join(buffer)) > max_length:
+                metadata = dict(doc.metadata)
+                metadata["chunk_index"] = chunk_index
+
+                split_docs.append(
+                    Document(
+                        page_content="\n".join(buffer).strip(),
+                        metadata=metadata
+                    )
+                )
+
+                buffer = []
+                chunk_index += 1
+
+        # Add remainder
+        if buffer:
+            metadata = dict(doc.metadata)
+            metadata["chunk_index"] = chunk_index
+
+            split_docs.append(
+                Document(
+                    page_content="\n".join(buffer).strip(),
+                    metadata=metadata
+                )
+            )
+
+    print(f"✂️ Code docs split: {len(documents)} → {len(split_docs)}")
+    return split_docs
+
