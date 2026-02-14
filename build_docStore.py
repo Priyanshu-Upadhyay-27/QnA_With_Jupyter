@@ -13,7 +13,7 @@ def build_rag_artifacts():
 
     split_text_chunks = split_text_documents(text_docs)
 
-    # This updates 'code_docs' in-place!
+
     split_code_chunks = split_code_documents(code_docs)
 
     print("🏗️ Building DocStore from tagged parents...")
@@ -21,7 +21,6 @@ def build_rag_artifacts():
 
     def add_to_store(docs):
         for doc in docs:
-            # We can trust 'parent_id' exists because the splitter added it
             p_id = doc.metadata["parent_id"]
 
             doc_store[p_id] = {
