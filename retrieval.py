@@ -21,7 +21,7 @@ class RelationalRetriever:
         self.vector_db = Chroma(
             persist_directory=persist_dir,
             embedding_function=self.embedding_function,
-            collection_name="notebook_text_rag"
+            collection_name="jupyter_rag_collection"
         )
         print(f"📊 [DEBUG] Chroma Collection Count: {self.vector_db._collection.count()}")
 
