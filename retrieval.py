@@ -1,8 +1,8 @@
 import json
 import os
 from langchain_chroma import Chroma
-# 1. Import your custom wrapper instead of LangChain's default
 from codeEmbedder import CodeT5Embeddings
+from langchain_ollama import OllamaEmbeddings
 
 
 class RelationalRetriever:
@@ -16,12 +16,12 @@ class RelationalRetriever:
         print("🚀 Initializing Relational Retriever...")
 
         # 2. Use your custom embedding class!
-        self.embedding_function = CodeT5Embeddings()
+        self.embedding_function = OllamaEmbeddings(model="bge-m3")
 
         self.vector_db = Chroma(
             persist_directory=persist_dir,
             embedding_function=self.embedding_function,
-            collection_name="jupyter_rag_collection"
+            collection_name="notebook_text_rag"
         )
         print(f"📊 [DEBUG] Chroma Collection Count: {self.vector_db._collection.count()}")
 
@@ -130,6 +130,6 @@ class RelationalRetriever:
 # --- How to Run ---
 if __name__ == "__main__":
     retriever = RelationalRetriever()
-    results = retriever.retrieve("What dataset is used in the jupyter notebook")
+    results = retriever.retrieve("What dataframe is used in the jupyter notebook")
     reference = retriever.format_for_llm(results)
     print(reference)
