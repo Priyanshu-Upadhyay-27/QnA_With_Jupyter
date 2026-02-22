@@ -58,7 +58,12 @@ class RelationalRetriever:
     def retrieve(self, query: str, k: int = 3):
         print(f"\n🔎 Querying: '{query}'")
 
-        results = self.vector_db.similarity_search(query, k=k)
+        results = self.vector_db.max_marginal_relevance_search(
+            query,
+            k=k,  # Final number of chunks to return (e.g., 3)
+            fetch_k=10,  # Initial pool of chunks to fetch before filtering (e.g., 10)
+            lambda_mult=0.5  # The diversity dial (1.0 = pure relevance, 0.0 = pure diversity)
+        )
         print(f"🛠️ [DEBUG] Chroma returned {len(results)} chunks.")
 
         final_results = []
@@ -130,6 +135,6 @@ class RelationalRetriever:
 # --- How to Run ---
 if __name__ == "__main__":
     retriever = RelationalRetriever()
-    results = retriever.retrieve("What dataframe is used in the jupyter notebook")
+    results = retriever.retrieve("Why cross validation is done at the end?")
     reference = retriever.format_for_llm(results)
     print(reference)
