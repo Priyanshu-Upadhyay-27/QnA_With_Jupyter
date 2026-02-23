@@ -62,7 +62,7 @@ def ask(question: str, k: int = 4, debug: bool = False) -> str:
     )
 
     prompt ="""
-    Hey LLM, you are a senior data scientist.
+    Hey LLM, you are a senior data scientist. You have to analyase the jupyter notebook well
     """
 
 
