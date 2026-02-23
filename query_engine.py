@@ -61,7 +61,11 @@ def ask(question: str, k: int = 4, debug: bool = False) -> str:
         for d in docs
     )
 
-    prompt =
+    prompt ="""
+    Hey LLM, you are a senior data scientist.
+    """
+
+
 
 
     response = llm.invoke(prompt)
