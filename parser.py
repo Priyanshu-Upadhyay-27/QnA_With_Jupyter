@@ -5,7 +5,7 @@ from typing import List, Dict
 def load_notebook(path: str):
     return nbformat.read(path, as_version=4)
 
-
+print("Hello")
 def parse_notebook(path: str) -> List[Dict]:
     nb = load_notebook(path)
     parsed_cells = []
@@ -31,6 +31,8 @@ def parse_notebook(path: str) -> List[Dict]:
             "metadata": metadata,
             "has_error": any(o.get("output_type") == "error" for o in output),  # NEW
             "tags": metadata.get("tags", []),  # NEW: extract tags
+
+
         })
 
     return parsed_cells
