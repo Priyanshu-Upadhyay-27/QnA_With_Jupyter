@@ -5,7 +5,6 @@ from typing import List, Dict
 def load_notebook(path: str):
     return nbformat.read(path, as_version=4)
 
-print("Hello")
 def parse_notebook(path: str) -> List[Dict]:
     nb = load_notebook(path)
     parsed_cells = []
