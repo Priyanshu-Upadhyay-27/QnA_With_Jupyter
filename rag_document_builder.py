@@ -48,14 +48,22 @@ def build_text_document(cell: dict) -> Document | None:
     purpose = cell.get("purpose", "").strip()
     explanation = cell.get("explanation", "").strip()
 
-    if not purpose and not explanation:
+    # NEW: Safely extract the result summary you generated with Ollama
+    result_summary = cell.get("result_summary", "").strip()
+
+    # UPDATED: Ensure we don't build empty documents
+    if not purpose and not explanation and not result_summary:
         return None
 
+    # UPDATED: Inject the RESULT block into the semantic search text
     text = f"""WHAT:
 {purpose}
 
 WHY:
 {explanation}
+
+RESULT:
+{result_summary}
 """.strip()
 
     metadata = {
