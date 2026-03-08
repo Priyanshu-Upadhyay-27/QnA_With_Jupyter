@@ -98,4 +98,4 @@ if __name__ == "__main__":
     results = retriever.retrieve("How did we handle missing values in the dataset?")
     reference = retriever.format_for_llm(results)
 
-    print(reference)
+    print(reference).
