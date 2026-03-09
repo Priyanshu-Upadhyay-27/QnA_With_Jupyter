@@ -92,7 +92,7 @@ class RelationalRetriever:
 
 # --- How to Run ---
 if __name__ == "__main__":
-    retriever = RelationalRetriever().
+    retriever = RelationalRetriever()
 
     # Test it with a real question!
     results = retriever.retrieve("How did we handle missing values in the dataset?")
