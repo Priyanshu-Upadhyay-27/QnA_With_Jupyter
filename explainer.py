@@ -146,4 +146,4 @@ def explain_cell(cell: dict) -> dict:
     cell["intent"] = tag_match.group(1).lower()
     cell["explanation_error"] = False
 
-    return cell
+    return cell.
