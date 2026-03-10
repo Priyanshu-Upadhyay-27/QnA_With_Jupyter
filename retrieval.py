@@ -90,7 +90,6 @@ class RelationalRetriever:
         return prompt_context
 
 
-# --- How to Run ---
 if __name__ == "__main__":
     retriever = RelationalRetriever()
 
