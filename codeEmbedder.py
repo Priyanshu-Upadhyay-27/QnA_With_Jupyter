@@ -4,7 +4,7 @@ from langchain_core.embeddings import Embeddings
 from typing import List
 
 
-class CodeT5Embeddings(Embeddings):.
+class CodeT5Embeddings(Embeddings):
     """
     A custom LangChain-compatible wrapper for the Salesforce CodeT5+ 110M model.
     Optimized for CPU inference on Windows laptops with limited VRAM.
