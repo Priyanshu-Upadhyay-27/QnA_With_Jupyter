@@ -4,7 +4,6 @@ from parser import parse_notebook
 from analyzer import analyze_code_cell
 from explainer import explain_cell
 from final_object_builder import assign_sections, build_final_object
-from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 from codeEmbedder import CodeT5Embeddings
 from index_builder import build_collection
@@ -19,7 +18,6 @@ from storage import (
 )
 from langchain_core.documents import Document
 import json
-import uuid
 
 
 
