@@ -93,7 +93,7 @@ class RelationalRetriever:
 if __name__ == "__main__":
     retriever = RelationalRetriever()
 
-    # Test it with a real question!
+    # Test it
     results = retriever.retrieve("How did we handle missing values in the dataset?")
     reference = retriever.format_for_llm(results)
 
