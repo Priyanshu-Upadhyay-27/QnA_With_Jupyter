@@ -19,3 +19,5 @@ Using the unique parent_id embedded in the Anchor's metadata, the system retriev
 
 Sibling Expansion (Stage 3 - The Horizontal Hop):
 Using the shared cell_id from the Parent document, the system queries the DocStore for all "Sibling" documents—specifically, the corresponding Explanation document linked to a Code document (or vice versa).
+
+The readme will be completed soon, just wait!
