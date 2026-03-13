@@ -94,7 +94,7 @@ if __name__ == "__main__":
     retriever = RelationalRetriever()
 
     # Test it
-    results = retriever.retrieve("How did we handle missing values in the dataset?")
+    results = retriever.retrieve("What is the purpose of cross validation?")
     reference = retriever.format_for_llm(results)
 
     print(reference)
