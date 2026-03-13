@@ -30,32 +30,41 @@ class RelationalRetriever:
 
         print(f"✅ Retriever Ready! Loaded {len(self.doc_store)} unique cells.")
 
-    def retrieve(self, query: str, k: int = 3):
+    def retrieve_debug(self, query: str, k: int = 3):
+        """Diagnostic tool to expose the raw math and chunk text."""
+        print(f"\n🔎 DEBUG QUERYING: '{query}'")
+
+        # 1. Check the DB size
+        total_chunks = self.vector_db._collection.count()
+        print(f"📊 Total chunks in ChromaDB: {total_chunks}")
+
+        # 2. Perform raw similarity search to expose the distance scores!
+        results = self.vector_db.similarity_search_with_score(query, k=k)
+
+        for i, (chunk, distance) in enumerate(results):
+            cell_id = chunk.metadata.get("cell_id", "UNKNOWN")
+            # Print the math score and a snippet of the text
+            print(f"   [{i + 1}] Distance: {distance:.4f} | Cell: {cell_id} | Text: {chunk.page_content[:60]}...")
+
+        return []  # Just returning empty for now since we are just debugging
+
+    def retrieve(self, query: str, max_cells: int = 3):
         print(f"\n🔎 Querying: '{query}'")
 
-        # MMR is perfect here for diverse chunk retrieval
-        results = self.vector_db.max_marginal_relevance_search(
-            query,
-            k=k,
-            fetch_k=10,
-            lambda_mult=0.5
-        )
-        print(f"🛠️ [DEBUG] Chroma returned {len(results)} chunks.")
+        # 1. Over-fetch: Ask Chroma for 15 chunks using standard similarity search
+        results = self.vector_db.similarity_search(query, k=15)
 
         final_results = []
         seen_cell_ids = set()
 
-        for i, chunk in enumerate(results):
-            # 1. The Bait: Extract the cell_id directly from the chunk's metadata
+        for chunk in results:
             cell_id = chunk.metadata.get("cell_id")
 
-            if not cell_id:
-                print("❌ [DEBUG] ERROR: Chroma chunk has no cell_id metadata!")
+            # Skip if there's no ID, or if we already grabbed this Parent Cell
+            if not cell_id or cell_id in seen_cell_ids:
                 continue
 
-            # 2. Deduplication: Skip if we already grabbed this parent cell
-            if cell_id in seen_cell_ids:
-                continue
+            # 2. Deduplication: We found a brand new unique Parent Cell!
             seen_cell_ids.add(cell_id)
 
             # 3. The Switch: Fetch the rich, uncut payload directly from JSON
@@ -65,6 +74,11 @@ class RelationalRetriever:
             else:
                 print(f"❌ [DEBUG] ERROR: cell_id {cell_id} is NOT in custom_object.json!")
 
+            # 4. Stop exactly when we hit our target number of UNIQUE cells
+            if len(final_results) == max_cells:
+                break
+
+        print(f"🛠️ [DEBUG] Successfully grabbed {len(final_results)} unique parent cells.")
         return final_results
 
     def format_for_llm(self, retrieved_results):
@@ -93,9 +107,15 @@ class RelationalRetriever:
 if __name__ == "__main__":
     retriever = RelationalRetriever()
 
-    # Test it
-    results = retriever.retrieve("What is the purpose of cross validation?")
-    reference = retriever.format_for_llm(results)
+    # Test the ACTUAL retrieve function with the over-fetch fix
+    print("\n" + "=" * 50)
+    print("TESTING QUERY 1: SVM Accuracy")
+    print("=" * 50)
+    results_1 = retriever.retrieve("What was the accuracy of the SVM model?")
+    print(retriever.format_for_llm(results_1))
 
-    print(reference)
-    # test commit
+    print("\n" + "=" * 50)
+    print("TESTING QUERY 2: Cross Validation")
+    print("=" * 50)
+    results_2 = retriever.retrieve("Why and where cross validation is used in the notebook?")
+    print(retriever.format_for_llm(results_2))
