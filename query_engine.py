@@ -123,3 +123,17 @@ class NotebookChatbot:
         print("\n🧹 Chat history has been cleared! Starting a fresh conversation.")
 
 
+if __name__ == "__main__":
+    bot = NotebookChatbot()
+    print("\n" + "=" * 50)
+    print("✅ Data Science Assistant Ready! (Type 'exit' to stop)")
+    print("=" * 50)
+
+    while True:
+        query = input("\n🧑‍💻 You: ")
+        if query.lower() in ['exit', 'quit']:
+            print("Goodbye! 👋")
+            break
+
+        answer = bot.ask(query)
+        print(f"\n🤖 Assistant:\n{answer}")
