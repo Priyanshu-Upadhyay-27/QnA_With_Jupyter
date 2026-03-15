@@ -1,4 +1,4 @@
-# final_object_builder.py
+# 4: final_object_builder.py, concatenating parser extraction, ast extraction and LLM explanation into a single custom object.
 from explainer import clean_cell_output
 def assign_sections(parsed_cells):
     """
@@ -47,4 +47,4 @@ def build_final_object(parsed, analyzed, explained):
 
     obj["dependency_score"] = len(obj["used"]) + len(obj["called_symbols"])
 
-    return obj
+    return obj.
