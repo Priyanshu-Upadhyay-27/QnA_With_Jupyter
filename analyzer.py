@@ -1,12 +1,9 @@
 # 2: analyzer.py
-# Purpose:
-# Extract structural + semantic signals from code cells.
-# These are HEURISTICS, not a full dependency graph.
+# Extract structural + semantic signals from code cells.These are HEURISTICS, not a full dependency graph.
 
 import ast
 from typing import Set, Dict, List
 import builtins
-
 BUILTINS = set(dir(builtins))
 
 
