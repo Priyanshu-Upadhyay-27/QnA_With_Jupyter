@@ -47,4 +47,4 @@ def build_final_object(parsed, analyzed, explained):
 
     obj["dependency_score"] = len(obj["used"]) + len(obj["called_symbols"])
 
-    return obj.
+    return obj
