@@ -55,3 +55,6 @@ loan_default_prediction_colab.ipynb
 debug_metadata.py
 test_code5t.py
 test_db.py
+build_docStore.py
+artifacts/doc_store.json
+query_rag.py
