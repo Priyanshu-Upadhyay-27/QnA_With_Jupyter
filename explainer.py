@@ -1,3 +1,4 @@
+# 3: explainer.py, LLM which sees the jupyter notebook each cell and generate a text explanation for each cell.
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage
 from dotenv import load_dotenv
