@@ -1,3 +1,4 @@
+# : the chatbot with rag, which includes the chatbot class.
 import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
@@ -50,10 +51,22 @@ class NotebookChatbot:
 
     def _format_memory(self) -> str:
         """
-        The Memory Manager (Private Helper).
-        Loops through self.chat_history and formats it into a readable string
-        (e.g., "User: ... \n Assistant: ...") so the LLM remembers the last few questions.
-        """
+                The Memory Manager (Private Helper).
+                Loops through self.chat_history and formats it into a readable string
+                (e.g., "User: ... \n Assistant: ...") so the LLM remembers the last few questions.
+                """
+        if not self.chat_history:
+            return "No previous conversation."
+
+        memory_str = "--- PREVIOUS CONVERSATION HISTORY ---\n"
+
+        # Grab only the last 3 pairs to save context space
+        recent_history = self.chat_history[-5:]
+
+        for role, message in recent_history:
+            memory_str += f"{role}: {message}\n\n"
+
+        return memory_str.strip()
 
     def ask(self, user_query: str) -> str:
         """
