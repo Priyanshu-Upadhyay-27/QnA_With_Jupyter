@@ -56,7 +56,7 @@ This means the model always has complete context, not a fragmented slice.
 
 ## 🏗️ Architecture
 
-![Architecture Diagram](assets/architecture.png)
+![Architecture Diagram](assets/Jupyter_RAG_Architecture.png)
 
 The system runs in three phases:
 
@@ -289,7 +289,7 @@ Two architectural gaps worth thinking about if this system were taken further:
 
 ### 🔀 Query Router
 
-Currently retrieval is hardcoded to query only `notebook_text_rag`.
+Currently, retrieval is hardcoded to query only `notebook_text_rag`.
 A query router sitting before retrieval could classify intent and
 route accordingly:
 
