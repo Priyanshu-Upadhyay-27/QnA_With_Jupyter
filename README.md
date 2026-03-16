@@ -1,8 +1,9 @@
 <div align="center">
 
-# 🔬 Jupyter Notebook RAG
+# 🔬 Relational RAG for Jupyter Notebooks
 
-### Ask questions about any Jupyter notebook — get answers with full cell context
+### Stop reading notebooks. Start querying them.
+ 
 
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![LangChain](https://img.shields.io/badge/LangChain-1.2.8-1C3C3C?style=flat-square&logo=langchain&logoColor=white)](https://langchain.com)
@@ -77,10 +78,10 @@ All enriched cells are stored in `artifacts/custom_object.json` — the **Ground
 
 Two parallel embedding pipelines populate ChromaDB:
 
-| Collection | Embedding Model | Status |
-|------------|----------------|--------|
+| Collection | Embedding Model | Status                     |
+|------------|----------------|----------------------------|
 | `notebook_text_rag` | `bge-m3` via Ollama | ✅ Active — queried at retrieval |
-| `notebook_code_rag` | `CodeT5Embeddings` | 🔵 Built — pending query router |
+| `notebook_code_rag` | `CodeT5Embeddings` | 🔵 Built — but not queried |
 
 Every chunk in both collections carries the `cell_id` of its parent cell as metadata. This is what enables the Bait & Switch lookup.
 
@@ -359,6 +360,6 @@ MIT — see [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-Built with 🔍 semantic search, 🧠 local LLMs, and the **Bait & Switch** pattern.
+Built with 🔍 semantic search, 🧠 local LLMs, and the **Bait & Switch** retrieval pattern.
 
 </div>
