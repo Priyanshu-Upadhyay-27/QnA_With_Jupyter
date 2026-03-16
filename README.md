@@ -23,11 +23,14 @@ A local RAG system that goes beyond keyword search — it understands **what eac
 
 **Demo — Query 1**
 
-https://github.com/Priyanshu-Upadhyay-27/QnA_With_Jupyter/raw/main/assets/JRAG_Q1.mp4
+https://github.com/user-attachments/assets/7dc46a29-5116-43ab-b23d-beede80fd1ba
+
 
 **Demo — Query 2**
 
-https://github.com/Priyanshu-Upadhyay-27/QnA_With_Jupyter/raw/main/assets/JRAG_Q2.mp4
+https://github.com/user-attachments/assets/3ad5a410-17bd-4850-91ef-b2cc82b75e5c
+
+
 
 <br/>
 
@@ -147,7 +150,7 @@ jupyter-notebook-rag/
 
 ### Prerequisites
 
-- Python 3.10+
+- Python 3.10
 - [Ollama](https://ollama.ai) installed and running locally
 - [Groq API key](https://console.groq.com) (free tier available)
 
