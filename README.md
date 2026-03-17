@@ -364,7 +364,6 @@ multi-notebook support, or any other improvement — feel free to:
 - Star the repo if you found it useful ⭐
 
 This project is actively maintained and open to collaboration.
-```
 
 ---
 
