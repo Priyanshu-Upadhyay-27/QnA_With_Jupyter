@@ -352,6 +352,22 @@ python-dotenv               Environment variable management
 
 ---
 
+## 🤝 Contributing
+
+Contributions, ideas, and feedback are welcome.
+
+If you have thoughts on the query router implementation, 
+multi-notebook support, or any other improvement — feel free to:
+
+- Open an **Issue** to discuss ideas or report bugs
+- Open a **Pull Request** for any improvements
+- Star the repo if you found it useful ⭐
+
+This project is actively maintained and open to collaboration.
+```
+
+---
+
 ## 📄 License
 
 MIT — see [LICENSE](LICENSE) for details.
