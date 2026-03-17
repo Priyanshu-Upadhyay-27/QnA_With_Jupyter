@@ -5,7 +5,7 @@
 ### Stop reading notebooks. Start querying them.
  
 
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![LangChain](https://img.shields.io/badge/LangChain-1.2.8-1C3C3C?style=flat-square&logo=langchain&logoColor=white)](https://langchain.com)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-1.4.1-FF6B35?style=flat-square)](https://trychroma.com)
 [![Groq](https://img.shields.io/badge/Groq-Llama_3.3_70B-F55036?style=flat-square)](https://groq.com)
